@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Navbar } from "../navbar";
 import { Footer } from "../footer";
 import { Link, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaStar } from 'react-icons/fa';
 import { BsStar } from 'react-icons/bs';
 import { ModalPage } from "../Modal/Modal";
@@ -181,21 +181,21 @@ export function CompareCompany() {
         });
     };
 
-    useEffect(() => {
+    const showComparison = useCallback(() => {
         if (Object.keys(firstCompany).length > 0 && Object.keys(secondCompany).length > 0) {
-            showComparison();
+            history.push({
+                pathname: "/ShowComparison",
+                state: {
+                    first: firstCompany,
+                    second: secondCompany
+                }
+            });
         }
-    }, [firstCompany, secondCompany]);
+    }, [firstCompany, secondCompany, history]);
 
-    const showComparison = () => {
-        history.push({
-            pathname: "/ShowComparison",
-            state: {
-                first: firstCompany,
-                second: secondCompany
-            }
-        });
-    };
+    useEffect(() => {
+        showComparison();
+    }, [firstCompany, secondCompany, showComparison]);
 
     return (
         <div>
